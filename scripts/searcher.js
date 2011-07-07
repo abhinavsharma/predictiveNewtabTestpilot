@@ -189,6 +189,7 @@ LinkJumpSearch.prototype.getLinkJumpTableForHost = function(revHost) {
 
 
 function FullSearch(utils) {
+  reportError("creating full search instance");
   let me = this;
   me.utils = utils;
   me.idfMap = {};
@@ -293,8 +294,78 @@ FullSearch.prototype.search = function(tags) {
       "revHost" : rev_host,
     });
   });
+  results = results.filter(function (a) {
+    return a.hub;
+  });
+
+  results = me.cleanResults(results);
+
+  return results.sort(function (a, b) {
+    return b.bookmarked - a.bookmarked;
+  });
+}
+
+FullSearch.prototype.cleanResults = function(results) {
+  reportError("CLEANING RESULTS" + results.length);
+  let me = this;
+  let hostCount = {};
+  let existingPlaces = {};
+  let total = 0;
+  results.forEach(function({placeId, title, url, score, frecency, bookmarked, revHost}) {
+    total += 1;
+    existingPlaces[placeId] = 1;
+    if (revHost in hostCount) {
+      hostCount[revHost] += 1;
+    } else { 
+      hostCount[revHost] = 1;
+    }
+  });
+  if (total > 16) {
+    
+  } else if (total == 16) {
+    return results;
+  } else {
+  try{
+    return me.addFallbacks(results, existingPlaces)
+  } catch (ex) {reportError(ex)}
+  }
+}
+
+FullSearch.prototype.addFallbacks = function (results, existingPlaces) {
+  reportError("adding fallbacks");
+  let me = this;
+  let allBacks = spinQuery(PlacesUtils.history.DBConnection, {
+    "query": "SELECT * FROM moz_places WHERE title is NOT NULL ORDER BY frecency DESC LIMIT 25",
+    "params" : {},
+    "names" : ["id", "title", "url", "frecency", "rev_host"],
+  });
+
+  reportError(J(allBacks));
+  let existingHosts = {}
+  allBacks.forEach(function({id, title, url, frecency, rev_host}) {
+    if (results.length < 16 && me.utils.siteCentral.isURLHub(url) && !(id in existingPlaces) && !(rev_host in existingHosts)) {
+      reportError("pushing " + url + title);
+      existingHosts[rev_host] = 1;
+      results.push({
+        "placeId": id,
+        "title": title,
+        "url": url,
+        "score" : 0, // score based sorting is done at this point
+        "frecency" : frecency,
+        "bookmarked" : false, //stable sort keeps this at the back
+        "engine": "all",
+        "hub" : true,
+        "anno" : [],
+        "revHost": rev_host,
+      });
+    } else {
+      return;
+    }
+  });
   return results;
 }
+
+
 
 function BookmarkSearch(utils) {
   let me = this;
