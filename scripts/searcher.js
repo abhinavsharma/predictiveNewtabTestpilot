@@ -66,7 +66,8 @@ TabJumpSearch.prototype.search = function(collectedPlaces, visiblePlaces) {
         "placeId" : id,
         "title" : title,
         "url": url,
-        "score" : (3*f/(2+f)) * Math.log((N-n+0.5)/(n+0.5)),
+        //"score" : (3*f/(2+f)) * Math.log((N-n+0.5)/(n+0.5)),
+        "score": (1+f) / (1+n),
         "frecency" : frecency,
         "bookmarked": utils.isBookmarked(id),
         "engine" : "tab-jump",
@@ -122,7 +123,10 @@ TabJumpSearch.prototype.getHostTable = function(revHost) {
   let hostTable = {};
   spinQuery(PlacesUtils.history.DBConnection, {
     "names": ["dst", "count"],
-    "query" : "SELECT * FROM moz_jump_tracker WHERE src = :revHost AND count > 5 LIMIT 15",
+    "query" : "SELECT dst, SUM(count) as count FROM (" + 
+      "SELECT dst, count FROM moz_jump_tracker WHERE src = :revHost UNION " + 
+      "SELECT src as dst, count FROM moz_jump_tracker WHERE dst = :revHost)" + 
+      "WHERE count > 5 GROUP BY dst ORDER BY count DESC LIMIT 15;",
     "params": {
       "revHost" : revHost,
     },
