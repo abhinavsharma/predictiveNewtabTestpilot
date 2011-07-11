@@ -71,7 +71,7 @@ AwesomeTab.prototype.updateResults = function() {
   let collector = new TagCollector(currentPlaces,visiblePlaces, me.utils, tagger);
   let collectedTags = collector.getResults();
   me.collectedHosts = collector.getHosts();
-  let searchResults = new FullSearch(utils).search(collectedTags);
+  let searchResults = new TabJumpSearch(utils).search(currentPlaces, visiblePlaces);
   reportError("** searchResults: "+ searchResults);
   let key = currentPlaces[0];
   me.resultMap[key] = searchResults;

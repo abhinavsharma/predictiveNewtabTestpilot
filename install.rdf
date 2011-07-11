@@ -5,9 +5,8 @@
     <creator>Mozilla Labs</creator>
     <description>Show predictions of where to go on new tabs</description>
     <homepageURL>https://testpilot.mozillalabs.com/</homepageURL>
-    <iconURL>http://mozillalabs.com/wp-content/themes/labs_project/img/testpilot-header.png</iconURL>
-    <id>predictive.newtab@testpilot.mozilla</id>
-    <name>Mozilla Labs Test Pilot - Predictive Newtab</name>
+    <id>predictive.newtab.jump@testpilot.mozilla</id>
+    <name>Mozilla Labs Test Pilot - Predictive Newtab Jump</name>
     <version>1.0</version>
 
     <bootstrap>true</bootstrap>
@@ -22,7 +21,7 @@
       <r:Description>
         <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
         <minVersion>4.0</minVersion>
-        <maxVersion>7.0a1</maxVersion>
+        <maxVersion>8.0a1</maxVersion>
       </r:Description>
     </targetApplication>
   </r:Description>
