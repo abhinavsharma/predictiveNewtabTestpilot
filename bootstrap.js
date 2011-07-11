@@ -101,7 +101,6 @@ function handlePageLoad(e) {
   if (isTopLevel(doc)) {
     let url = e.target.location.href;
     if (global.utils.isValidURL(url)) {
-      global.awesomeTab.updateResults();
       global.lastURL = url;
     }
     global.jumper.addTabChange(url);
@@ -112,7 +111,6 @@ function handleTabSelect(e) {
   let url = e.originalTarget.linkedBrowser.contentDocument.location.href;
   reportError(url);
   if (global.utils.isValidURL(url)) {
-    global.awesomeTab.updateResults();
     reportError("TAB CHANGE: " + url);
     global.lastURL = url;
     global.jumper.addTabChange(url);
@@ -148,8 +146,7 @@ function setupListener(window) {
           Services.wm.getMostRecentWindow("navigator:browser").gURLBar.value = "";
           let doc = tab.linkedBrowser.contentDocument;
           try{
-          //let dashboard = new AwesomeTab(global.utils, global.central, global.tagger, 0) //global.thumbnailer.getAnnoID());
-          //global.awesomeTab.updateResults();
+          global.awesomeTab.updateResults();
           let results = global.awesomeTab.getResults();
           global.awesomeTab.display(results, doc);
           } catch (ex) {
