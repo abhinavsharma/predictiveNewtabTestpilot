@@ -53,7 +53,7 @@ TabJumpSearch.prototype.search = function(collectedPlaces, visiblePlaces) {
   let N = me.getTotalVisitsToAllHosts();
   for (let otherHost in hostTable) {
     spinQuery(PlacesUtils.history.DBConnection, {
-      "query" : "SELECT * FROM moz_places WHERE rev_host = :otherHost AND title IS NOT NULL AND visit_count > 10 ORDER BY url LIMIT 1",
+      "query" : "SELECT * FROM moz_places WHERE rev_host = :otherHost AND title IS NOT NULL AND visit_count > 5 ORDER BY url LIMIT 1",
       "params" : {
         "otherHost" : otherHost,
       },
