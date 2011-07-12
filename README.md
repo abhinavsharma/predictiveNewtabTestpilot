@@ -9,12 +9,7 @@ Firefox does not currently implement a "speed-dial" to help you get to popular w
 Features
 --------
 
-Some useful feature that one might consider displaying on such a new tab page are:
+There are two branches, with each taking a different approach to predictions
 
-+ Bookmarks similar to what pages are currently open.
-+ Tagged bookmarks are gievn heavy preference
-+ This is followed by a relevance score based on number of keywords matched
-+ This is followed by frecency based ranking.
-
-
-
++ allsearch - This one works by collecting tags from your current browsing session and running a search for similar content in your Firefox history.
++ jumptracker - This one works by installing a tracker to track what hosts you jump between the most and recommends based on that information.
