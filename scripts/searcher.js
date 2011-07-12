@@ -74,6 +74,7 @@ TabJumpSearch.prototype.search = function(collectedPlaces, visiblePlaces) {
         "hub": utils.siteCentral.isURLHub(url), // TODO
         "anno" : [],
         "revHost" : rev_host,
+        "fallback": false,
       });
     });
   }
@@ -189,6 +190,7 @@ TabJumpSearch.prototype.addFallbacks = function (results, existingPlaces) {
         "hub" : true,
         "anno" : [],
         "revHost": rev_host,
+        "fallback": true,
       });
     } else {
       return;
