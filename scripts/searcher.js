@@ -292,6 +292,7 @@ FullSearch.prototype.search = function(tags) {
       "hub": me.utils.siteCentral.isURLHub(url),
       "anno" : [],
       "revHost" : rev_host,
+      "fallback": true,
     });
   });
   results = results.filter(function (a) {
@@ -357,6 +358,7 @@ FullSearch.prototype.addFallbacks = function (results, existingPlaces) {
         "hub" : true,
         "anno" : [],
         "revHost": rev_host,
+        "fallback" : true,
       });
     } else {
       return;
