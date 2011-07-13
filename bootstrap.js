@@ -138,14 +138,16 @@ function setupListener(window) {
     return function(url) {
       let tab = orig.apply(this, arguments);
       if (url == "about:blank") {
-        let gBrowser = Services.wm.getMostRecentWindow("navigator:browser").gBrowser;
+        let win = Services.wm.getMostRecentWindow("navigator:browser");
+        win.gURLBar.value = "";
+        let gBrowser = win.gBrowser;
         let fileURI = global.aboutURI.resolve('');
         let tBrowser = gBrowser.getBrowserForTab(tab)
         tBrowser.loadURI(fileURI, null, null);
 
         tab.linkedBrowser.addEventListener("load", function() {
           tab.linkedBrowser.removeEventListener("load", arguments.callee, true);
-          Services.wm.getMostRecentWindow("navigator:browser").gURLBar.value = "";
+          //Services.wm.getMostRecentWindow("navigator:browser").gURLBar.value = "";
           let doc = tab.linkedBrowser.contentDocument;
           try{
           //let dashboard = new AwesomeTab(global.utils, global.central, global.tagger, 0) //global.thumbnailer.getAnnoID());
